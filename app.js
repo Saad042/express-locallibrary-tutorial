@@ -23,6 +23,14 @@ const catalogRouter = require("./routes/catalog"); //Import routes for "catalog"
 
 var app = express();
 
+const numberOfProxies = process.env.NUMBER_OF_PROXIES;
+app.set("trust proxy", numberOfProxies);
+
+app.get("/ip", (request, response) => response.send(request.ip));
+app.get("/x-forwarded-for", (request, response) =>
+  response.send(request.headers["x-forwarded-for"])
+);
+
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
